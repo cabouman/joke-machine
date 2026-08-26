@@ -1,7 +1,8 @@
 # The Joke Machine
 
 A web page that shows a grid of topics. Click a topic and it tells a joke
-about it. Click again for a different one.
+about it. Click again for a different one. Jokes are read out loud using the
+browser's built-in speech synthesis; a button turns the sound off.
 
 Live: https://cabouman.github.io/joke-machine/
 
