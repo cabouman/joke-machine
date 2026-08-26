@@ -20,6 +20,28 @@ PAGE = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
+<meta name="description" content="{tagline_short}">
+
+<!-- Tab icon and iPhone home-screen icon. -->
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<!-- The card that Messages, Slack, and social sites show for this link.
+     og:url and og:image have to be full addresses, not relative ones. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{title}">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{tagline_short}">
+<meta property="og:url" content="{site_url}">
+<meta property="og:image" content="{site_url}preview.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A smiling face above the words The Joke Machine">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{tagline_short}">
+<meta name="twitter:image" content="{site_url}preview.png">
 <style>
 :root {{
   --bg: #faf8f4;
@@ -236,6 +258,8 @@ def main():
     page = PAGE.format(
         title=html.escape(data["title"]),
         tagline=html.escape(data["tagline"]),
+        tagline_short=html.escape(data["tagline_short"]),
+        site_url=html.escape(data["site_url"]),
         data=json.dumps(data, ensure_ascii=False),
     )
 

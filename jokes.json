@@ -1,6 +1,8 @@
 {
   "title": "The Joke Machine",
   "tagline": "Pick a topic. Get a joke. Repeat until someone asks you to stop.",
+  "tagline_short": "Pick a topic. Get a joke.",
+  "site_url": "https://cabouman.github.io/joke-machine/",
   "categories": [
     {
       "name": "Engineers",

@@ -18,9 +18,18 @@ the page:
 That writes `docs/index.html`, which is what GitHub Pages serves. To add a
 joke, edit `jokes.json`, run the script, and push.
 
+The logo and the link-preview card are drawn by a second script:
+
+    python3 make_preview.py
+
+Run that first if you change the look, then run `build_site.py`.
+
 ## Files
 
-- `jokes.json` — the topics and the jokes
+- `jokes.json` — the topics, the jokes, and the site title and address
 - `build_site.py` — reads the JSON, writes the page
+- `make_preview.py` — draws the logo and the link-preview card
 - `docs/index.html` — the generated page
+- `docs/preview.png` — the picture messaging apps show for the link
+- `docs/favicon.png` — the tab and home-screen icon
 - `thingy-prompt.md` — the lab write-up
