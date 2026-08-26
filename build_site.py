@@ -177,7 +177,35 @@ const sound   = document.getElementById("sound");
 const novoice = document.getElementById("novoice");
 
 let current = null;   // index of the selected category
-let bag = [];         // jokes not yet shown for that category
+
+// One bag of unseen jokes per topic, kept in the browser so that
+// switching topics or closing the tab does not bring jokes back.
+// A bag holds positions into that topic's joke list.
+const BAGS_KEY = "jokeBags.v1";
+let bags = loadBags();
+
+function loadBags() {{
+  try {{
+    const saved = JSON.parse(localStorage.getItem(BAGS_KEY) || "{{}}");
+    return (saved && typeof saved === "object") ? saved : {{}};
+  }} catch (e) {{
+    return {{}};
+  }}
+}}
+
+function saveBags() {{
+  try {{ localStorage.setItem(BAGS_KEY, JSON.stringify(bags)); }} catch (e) {{}}
+}}
+
+// Unseen jokes for a topic. Refills once every joke has been shown.
+// Positions past the end are dropped, so editing jokes.json is safe.
+function bagFor(cat) {{
+  let bag = bags[cat.name];
+  if (!Array.isArray(bag)) bag = null;
+  if (bag) bag = bag.filter(n => Number.isInteger(n) && n >= 0 && n < cat.jokes.length);
+  if (!bag || bag.length === 0) bag = cat.jokes.map((_, n) => n);
+  return bag;
+}}
 
 // Read aloud uses the browser's built-in speech synthesis. Nothing is
 // downloaded and no account is needed. Older browsers may not have it.
@@ -224,19 +252,27 @@ DATA.categories.forEach((cat, i) => {{
   grid.appendChild(b);
 }});
 
-// Show a joke from category i. Refill the bag when it runs out, so
-// every joke is seen once before any repeats.
+// Show an unseen joke from category i.
 function pick(i) {{
+  const cat = DATA.categories[i];
+
   if (i !== current) {{
     current = i;
-    bag = [];
     [...grid.children].forEach((b, k) =>
       b.setAttribute("aria-pressed", k === i ? "true" : "false"));
   }}
-  if (bag.length === 0) bag = DATA.categories[i].jokes.slice();
+
+  const bag = bagFor(cat);
   const k = Math.floor(Math.random() * bag.length);
-  const text = bag.splice(k, 1)[0];
-  topic.textContent = DATA.categories[i].name;
+  const text = cat.jokes[bag.splice(k, 1)[0]];
+
+  bags[cat.name] = bag;
+  saveBags();
+
+  const left = bag.length;
+  topic.textContent = left > 0
+    ? cat.name + " · " + left + " more before any repeat"
+    : cat.name + " · that was the last new one";
   joke.textContent = text;
   again.hidden = false;
   say(text);

@@ -45,7 +45,13 @@ Must have:
 - A grid of topic buttons on a single page.
 - Clicking a topic shows one joke about that topic.
 - An "Another one" button that shows a different joke in the same topic.
-- Every joke in a topic appears once before any of them repeats.
+- Every joke in a topic appears once before any of them repeats, and the
+  page remembers which ones I have already seen even if I switch topics or
+  close the tab.
+- A line above the joke says how many are left before anything repeats.
+- Each joke is read out loud, with a button to turn the sound off.
+- Sharing the link shows a card with a logo, a title, and a one-line
+  description.
 - The jokes live in a separate data file, not inside the HTML, so I can add
   or change jokes without touching the page code.
 - A Python script rebuilds the page from that data file.
