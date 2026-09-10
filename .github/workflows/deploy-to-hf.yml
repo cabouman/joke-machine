@@ -10,17 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble and push the Space
+      - name: Update the Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          mkdir space
-          cp .hf/README.md space/
+          git clone "https://cabouman:$HF_TOKEN@huggingface.co/spaces/cabouman/joke-machine" space
+          cp .hf/README.md space/README.md
           cp docs/index.html docs/favicon.png docs/preview.png docs/icon.png space/
           cd space
-          git init -b main
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add .
-          git commit -m "Deploy from GitHub commit $GITHUB_SHA"
-          git push --force "https://cabouman:$HF_TOKEN@huggingface.co/spaces/cabouman/joke-machine" main
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to deploy."
+          else
+            git commit -m "Deploy from GitHub commit $GITHUB_SHA"
+            git push
+          fi
