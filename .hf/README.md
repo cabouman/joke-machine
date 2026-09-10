@@ -15,3 +15,5 @@ The Joke Machine, an example thingy for ECE 60141 Lab 1.
 This Space is a deployment mirror. The source lives at
 https://github.com/cabouman/joke-machine and every push to main there
 redeploys this Space via a GitHub Action.
+
+Maintained by Charlie Bouman (cabouman).
